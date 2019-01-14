@@ -1,0 +1,26 @@
+#!/bin/bash
+set +x
+
+NG_WAIT_PID=${1}
+
+while true
+do
+  grep_op=$( ps aux | awk '{print $2 }' | grep $NG_WAIT_PID )
+  echo $grep_op
+  Found="FALSE"
+  
+  for pidN in $grep_op; do
+      if [ "$pidN" = "$NG_WAIT_PID" ];
+      then
+          echo "STILL RUNNING"
+          sleep 60
+          Found="TRUE"
+      fi
+  done
+  
+  echo $Found
+  if [ "$Found" = "FALSE" ]
+  then
+        break
+  fi
+done
